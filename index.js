@@ -18,7 +18,7 @@ restService.use(bodyParser.json());
 /*
  /echo api is used for the getting text from dialog flow and store that text into speech variable.
  */
-restService.post("/database", function(req, res) {
+restService.post("/echo", function(req, res) {
     let speech =
         req.body.result &&
         req.body.result.parameters &&
@@ -33,17 +33,16 @@ restService.post("/database", function(req, res) {
         /*
         Compare speech variable for null or empty values. If speech variable is not null and its not empty then execute
         if block otherwise execute else block.
+
         If block explanation - dbcreate.php is API where we send speech variable as post variable. Once API is executed
         success message is send back to user.
         else block explanation - normal error message is sent back to the user.
          */
     if (speech !== null && speech !== ''){
-        
-        request.post({url:'https://forserene.com/mini/myDB.php', form: {slack:speech}}, function(err,httpResponse,body){
-          var obj = JSON.parse(body)
+        request.post({url:'https://forserene.com/mini/dbcreate.php', form: {slack:speech}}, function(err,httpResponse,body){
             return res.json({
-                speech:obj.text,
-                displayText: obj.code,
+                speech: "Database Created Successfully",
+                displayText: "Database Created Successfully",
                 source: "webhook-echo-sample"
             });
         });
