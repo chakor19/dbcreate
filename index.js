@@ -40,9 +40,10 @@ restService.post("/echo", function(req, res) {
          */
     if (speech !== null && speech !== ''){
         request.post({url:'https://forserene.com/mini/dbcreate.php', form: {slack:speech}}, function(err,httpResponse,body){
+            var obj = JSON.parse(body)
             return res.json({
-                speech: "Database Created Successfully",
-                displayText: "Database Created Successfully",
+                speech: obj.text,
+                displayText: obj.code,
                 source: "webhook-echo-sample"
             });
         });
